@@ -1,7 +1,15 @@
 doctype html
 html(lang="ko")
     head 
-        title Youtube
+        title #{pageTitle} | Youtube
+        link(rel="stylesheet" href="https://unpkg.com/mvp.css")
     body
-        block content
-    include partials/footer.pug
+        header 
+            h1=pageTitle
+            nav 
+                ul 
+                    li 
+                        a(href=`/videos/upload`) Upload Video
+        main
+            block content
+    include partials/footer
