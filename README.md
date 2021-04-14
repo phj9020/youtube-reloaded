@@ -2,19 +2,19 @@
 
 ## Router
 
-[] /  -> Home
-[] /join -> Join
-[] /login -> Login
-[] /search -> Search
+[x] /  -> Home
+[x] /join -> Join
+[x] /login -> Login
+[x] /search -> Search
 
-[] /users/:id -> See profile of user
-[] /users/logout -> Log out 
-[] /users/edit -> Edit My Profile
-[] /users/remove -> Delete My Profile
+[x] /users/:id -> See profile of user
+[x] /users/logout -> Log out 
+[x] /users/edit -> Edit My Profile
+[x] /users/remove -> Delete My Profile
 
-[] /videos/:id -> See Video
-[] /videos/:id/edit -> Edit Video
-[] /videos/:id/delete -> Delete Video
-[] /videos/upload -> Upload Video
-[] /videos/:id/comment -> Comment on the Video
-[] /videos/:id/comment/delete -> Delete comment of the Video
+[x] /videos/:id -> See Video
+[x] /videos/:id/edit -> Edit Video
+[x] /videos/:id/delete -> Delete Video
+[x] /videos/upload -> Upload Video
+[x] /videos/:id/comment -> Comment on the Video
+[x] /videos/:id/comment/delete -> Delete comment of the Video

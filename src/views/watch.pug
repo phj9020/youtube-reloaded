@@ -2,5 +2,6 @@ extends base.pug
 
 block content 
     div 
-        h3 #{video.views} #{video.views > 1 ? "views" : "view"}
+        h3 #{video.meta.views} #{video.meta.views > 1 ? "views" : "view"}
         a(href=`${video.id}/edit`) Edit Video
+        

@@ -4,7 +4,7 @@ import {watch, getEdit, getUpload,postUpload, deleteVideo, postEdit} from '../co
 const videoRouter = express.Router();
 
 videoRouter.route("/upload").get(getUpload).post(postUpload);
-videoRouter.get("/:id(\\d+)", watch);
+videoRouter.get("/:id", watch);
 // make 1 url with get, post request
 videoRouter.route("/:id(\\d+)/edit").get(getEdit).post(postEdit);
 // videoRouter.get("/:id(\\d+)/edit", getEdit);
