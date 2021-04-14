@@ -1,7 +1,11 @@
 extends base.pug
 
 block content 
-    div 
+    div
+        h2=video.title
+        p=video.description
+        small=video.createdAt.toDateString()
         h3 #{video.meta.views} #{video.meta.views > 1 ? "views" : "view"}
-        a(href=`${video.id}/edit`) Edit Video
+        small=video.hashtags.join(" ")
+    a(href=`${video.id}/edit`) Edit Video
         

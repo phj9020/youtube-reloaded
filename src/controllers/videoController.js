@@ -10,15 +10,22 @@ export const watch = async(req, res) => {
     const {id} = req.params;
     // find video which has a specific id from video object 
     const video = await Video.findById(id);
-
-    return res.render("watch", {pageTitle: `Watching`,video})
+    if(!video) {
+        return res.render("404", {pageTitle: "Video Not Found"})
+    }
+    return res.render("watch", {pageTitle: video.title, video})
 }    
 
-export const getEdit = (req, res) => {
+export const getEdit = async(req, res) => {
     const {id} = req.params;
     // access DB : get selected id video object 
-    
-    return res.render("edit", {pageTitle: `Editing`})
+    const video= await Video.findById(id);
+
+    if(!video) {
+        return res.render("404", {pageTitle: "Video Not Found"})
+
+    }
+    return res.render("edit", {pageTitle: `Editing ${video.title}`, video})
 }
 
 export const postEdit = (req, res) => {
@@ -42,7 +49,7 @@ export const postUpload = async(req, res) => {
         await Video.create({
             title: title,
             description: description,
-            hashtags: hashtags.split(",").map(word => `#${word}`)
+            hashtags: hashtags.split(",").map(word=>`#${word}`)
         })
         return res.redirect("/");
     } catch(error) {
