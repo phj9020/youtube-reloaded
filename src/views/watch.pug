@@ -5,7 +5,9 @@ block content
         h2=video.title
         p=video.description
         small=video.createdAt.toDateString()
-        h3 #{video.meta.views} #{video.meta.views > 1 ? "views" : "view"}
+        p #{video.meta.views} #{video.meta.views > 1 ? "views" : "view"}
         small=video.hashtags.join(" ")
     a(href=`${video.id}/edit`) Edit Video
+    br
+    a(href=`${video.id}/delete`) Delete Video
         
