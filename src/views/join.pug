@@ -1,11 +1,17 @@
 extends base
 
 block content
-    p=errorMessage
+    if errorMessage
+        span=errorMessage
     form(method="POST")
         input(name="name" type="text" placeholder="Your Name" required)
         input(name="email" type="email" placeholder="Email Address" required)
         input(name="username" type="text" placeholder="User Name" required)
-        input(name="password" type="password" placeholder="Password" required)
+        input(name="password1" type="password" placeholder="Set Password" required)
+        input(name="password2" type="password" placeholder="Confirm Password" required)
         input(name="location" type="text" placeholder="Location")
         input(type="submit" value="Create Account")
+    hr
+    div 
+        span Already have an account? 
+        a(href="/login") Log In now

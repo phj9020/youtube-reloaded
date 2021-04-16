@@ -12,9 +12,8 @@ const userSchema = new mongoose.Schema({
 
 // add middleware to hash password before save in database
 userSchema.pre("save", async function() {
-    console.log("Users Password", this.password)
+    console.log(this.password)
     this.password = await bcrypt.hash(this.password, 5);
-    console.log("HASH PASSWORD", this.password)
 })
 
 
