@@ -14,16 +14,15 @@ const logger = morgan("dev");
 app.set("views", process.cwd()+ "/src/views");
 app.set('view engine', 'pug');
 
-
 //middleware 
 app.use(logger);
 app.use(express.urlencoded({extended:true}))
 app.use(session({
-    secret: "hello",
+    secret: process.env.COOKIE_SECRET,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     store: MongoStore.create({
-        mongoUrl: 'mongodb://127.0.0.1:27017/youtube'
+        mongoUrl: process.env.DB_URL
     })
 }))
 app.use(localsMiddleware);
