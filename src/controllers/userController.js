@@ -44,41 +44,28 @@ export const getEdit = (req, res) => {
 export const postEdit = async(req, res) => {
     // Update Profile in DB
     // 1. find id in req.session, find input value in req.body
-    const { session: {user : {_id}}, body : {email, username, name, location} } = req;
-
-    // check if input email from session
+    const { session: {user : {_id, avatarUrl}}, body : {email, username, name, location}, file } = req;
+    
+    // exception: if user changes email, search db if changed email exist -> if exist show error message, else update mongodb 
     if(req.session.user.email !== email) {
         const exist = await User.exists({email: req.body.email}); 
         
         if(exist) {
-            return res.status(400).render("edit-profile", {pageTitle:"Edit Profile", errorMessage:"This email is already taken. Please use another email"})
+            return res.status(400).render("users/edit-profile", {pageTitle:"Edit Profile", errorMessage:"This email is already taken. Please use another email"})
         }
-        // 2. find by id and update in mongodb
-        const updatedUser = await User.findByIdAndUpdate(_id, {
-            name: name,
-            email: email,
-            username: username,
-            location: location
-        }, {new: true});
-        // 3. update session with new object
-        req.session.user = updatedUser;
-        return res.redirect("/users/edit");
-    } 
-    
-    // check if input username is different from session
-    if(req.session.user.username !== username || req.session.user.name !== name || req.session.user.location !== location) {
-        // 2. find by id and update in mongodb
-        const updatedUser = await User.findByIdAndUpdate(_id, {
-            name: name,
-            email: email,
-            username: username,
-            location: location
-        }, {new: true});
-        // 3. update session with new object
-        req.session.user = updatedUser;
-        return res.redirect("/users/edit");
     }
-    return res.render("users/edit-profile", {pageTitle:"Edit Profile", errorMessage:"This Email/Username is same as before"})
+    // 2. find by id and update in mongodb
+    const updatedUser = await User.findByIdAndUpdate(_id, {
+        name: name,
+        email: email,
+        username: username,
+        location: location,
+        avatarUrl: file ? file.path : avatarUrl
+    }, {new: true});
+
+    // 3. update session with new object
+    req.session.user = updatedUser;
+    return res.redirect("/users/edit");
 }
 
 
