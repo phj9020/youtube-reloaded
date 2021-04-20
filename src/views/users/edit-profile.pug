@@ -1,4 +1,4 @@
-extends base
+extends ../base
 
 block content 
     span=errorMessage
@@ -8,5 +8,8 @@ block content
         input(name="name" type="text" value=loggedInUser.name placeholder="Name" required)
         input(name="location" type="text" value=loggedInUser.location placeholder="Location")
         input(type="submit" value="Update Profile")
+        hr
+        if !loggedInUser.socialLogin 
+            a(href="change-password") Change Password
         
         

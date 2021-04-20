@@ -38,7 +38,7 @@ export const postJoin = async(req, res) => {
 }
 
 export const getEdit = (req, res) => {
-    return res.render("edit-profile", {pageTitle: "Edit Profile"})
+    return res.render("users/edit-profile", {pageTitle: "Edit Profile"})
 }
 
 export const postEdit = async(req, res) => {
@@ -78,12 +78,43 @@ export const postEdit = async(req, res) => {
         req.session.user = updatedUser;
         return res.redirect("/users/edit");
     }
-    return res.render("edit-profile", {pageTitle:"Edit Profile", errorMessage:"This Email/Username is same as before"})
+    return res.render("users/edit-profile", {pageTitle:"Edit Profile", errorMessage:"This Email/Username is same as before"})
 }
 
-export const remove = (req, res) => {    
-    res.send("delete user")
+
+
+export const getChangePassword = (req, res) => {
+    res.render("users/change-password", {pageTitle: "Change Password"})
 }
+
+export const postChangePassword = async(req, res) => {
+    // find current user_id from req.session.user._id
+    const {body : {currentPassword, newPassword,confirmPassword},session: {user: {_id}}} = req;
+    
+    // 1. check new password and confirm new password match 
+    if(newPassword !== confirmPassword) {
+        return res.status(400).render("users/change-password", {pageTitle: "Change Password", errorMessage:"New Password does not match the confirmation"})
+    }
+    
+    // 2. find user by _id
+    const user = await User.findById(_id);
+    
+    // 3. check oldpassword is correct from db.users's password
+    const match = await bcrypt.compare(currentPassword, user.password);
+    if(!match){
+        return res.status(400).render("users/change-password", {pageTitle: "Change Password", errorMessage:"Current Password does not match"})
+    }
+    // 4. update password 
+    user.password = newPassword;
+    // 5. *trigger userSchema.pre("save") in User.js 
+    await user.save();
+
+    // send notification that password has been changed
+
+    // 6. log-out
+    res.redirect("/users/logout");
+}
+
 
 export const profile = (req, res) => {
     res.send("Profile")
