@@ -66,7 +66,7 @@ export const postEdit = async(req, res) => {
     } 
     
     // check if input username is different from session
-    if(req.session.user.username !== username) {
+    if(req.session.user.username !== username || req.session.user.name !== name || req.session.user.location !== location) {
         // 2. find by id and update in mongodb
         const updatedUser = await User.findByIdAndUpdate(_id, {
             name: name,
