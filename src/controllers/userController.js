@@ -46,12 +46,12 @@ export const postEdit = async(req, res) => {
     // 1. find id in req.session, find input value in req.body
     const { session: {user : {_id}}, body : {email, username, name, location} } = req;
 
-    // check if input email, username is different from session
-    if(req.session.user.email !== email || req.session.user.username !== username) {
+    // check if input email from session
+    if(req.session.user.email !== email) {
         const exist = await User.exists({email: req.body.email}); 
         
         if(exist) {
-            return res.status(400).render("edit-profile", {pageTitle:"Edit Profile", errorMessage:"This username/email is already taken. Please use another email"})
+            return res.status(400).render("edit-profile", {pageTitle:"Edit Profile", errorMessage:"This email is already taken. Please use another email"})
         }
         // 2. find by id and update in mongodb
         const updatedUser = await User.findByIdAndUpdate(_id, {
@@ -62,10 +62,23 @@ export const postEdit = async(req, res) => {
         }, {new: true});
         // 3. update session with new object
         req.session.user = updatedUser;
-        console.log("세션", req.session.user)
         return res.redirect("/users/edit");
     } 
-    return res.status(400).render("edit-profile", {pageTitle:"Edit Profile", errorMessage:"This username/email is already taken. Please use another email or username"})
+    
+    // check if input username is different from session
+    if(req.session.user.username !== username) {
+        // 2. find by id and update in mongodb
+        const updatedUser = await User.findByIdAndUpdate(_id, {
+            name: name,
+            email: email,
+            username: username,
+            location: location
+        }, {new: true});
+        // 3. update session with new object
+        req.session.user = updatedUser;
+        return res.redirect("/users/edit");
+    }
+    return res.render("edit-profile", {pageTitle:"Edit Profile", errorMessage:"This Email/Username is same as before"})
 }
 
 export const remove = (req, res) => {    
