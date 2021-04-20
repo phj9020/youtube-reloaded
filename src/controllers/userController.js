@@ -37,12 +37,43 @@ export const postJoin = async(req, res) => {
     }
 }
 
-export const edit = (req, res) => {
-    res.send("edit user ›")
+export const getEdit = (req, res) => {
+    return res.render("edit-profile", {pageTitle: "Edit Profile"})
+}
+
+export const postEdit = async(req, res) => {
+    // Update Profile in DB
+    // 1. find id in req.session, find input value in req.body
+    const { session: {user : {_id}}, body : {email, username, name, location} } = req;
+
+    // check if input email, username is different from session
+    if(req.session.user.email !== email || req.session.user.username !== username) {
+        const exist = await User.exists({email: req.body.email}); 
+        
+        if(exist) {
+            return res.status(400).render("edit-profile", {pageTitle:"Edit Profile", errorMessage:"This username/email is already taken. Please use another email"})
+        }
+        // 2. find by id and update in mongodb
+        const updatedUser = await User.findByIdAndUpdate(_id, {
+            name: name,
+            email: email,
+            username: username,
+            location: location
+        }, {new: true});
+        // 3. update session with new object
+        req.session.user = updatedUser;
+        console.log("세션", req.session.user)
+        return res.redirect("/users/edit");
+    } 
+    return res.status(400).render("edit-profile", {pageTitle:"Edit Profile", errorMessage:"This username/email is already taken. Please use another email or username"})
 }
 
 export const remove = (req, res) => {    
     res.send("delete user")
+}
+
+export const profile = (req, res) => {
+    res.send("Profile")
 }
 
 export const getLogin = (req, res) => {
@@ -70,9 +101,6 @@ export const postLogin = async (req, res) => {
     return res.redirect("/")
 }
 
-export const profile = (req, res) => {
-    res.send("Profile")
-}
 
 export const logout = (req, res) => {
     // destroy session (logout)
@@ -81,7 +109,7 @@ export const logout = (req, res) => {
 }
 
 
-
+// 1. send user to github : redirect github login url 
 export const startGithubLogin = (req, res) => {
     const baseURL = `https://github.com/login/oauth/authorize`;
     const configObject = {
@@ -94,6 +122,7 @@ export const startGithubLogin = (req, res) => {
     return res.redirect(redirectedURL)
 }
 
+// 2. return with code github provided -> get code value & make postURL and POST 
 export const finishGithubLogin = async(req, res) => {
     const baseURL = `https://github.com/login/oauth/access_token`;
     const configObject = {
@@ -111,7 +140,8 @@ export const finishGithubLogin = async(req, res) => {
             Accept: 'application/json'
         }
     })).json();
-
+    
+    // 3. get access token  
     // if access token exist 
     if("access_token" in tokenRequest) {
         // get access token & acess api
@@ -124,6 +154,7 @@ export const finishGithubLogin = async(req, res) => {
                 Authorization: `token ${access_token}`
             }
         })).json();
+
         console.log(userData);
 
         // get email data ( array of private email / public email)
@@ -138,6 +169,7 @@ export const finishGithubLogin = async(req, res) => {
         const githubEmailObj = emailData.find(email => email.primary === true && email.verified === true);
         
         if(!githubEmailObj) {
+            // to do : set notification 
             return res.redirect("/login");
         }
 

@@ -5,7 +5,7 @@ import MongoStore from 'connect-mongo'
 import rootRouter from './routers/rootRouter';
 import videoRouter from './routers/videoRouter';
 import userRouter from './routers/userRouter';
-import {localsMiddleware} from './middlewares';
+import {localsMiddleware, protectorMiddleware} from './middlewares';
 
 const app = express();
 
