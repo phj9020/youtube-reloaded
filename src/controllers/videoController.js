@@ -50,12 +50,14 @@ export const getUpload = (req, res) => {
 }
 
 export const postUpload = async(req, res) => {
-    const { title, description, hashtags} = req.body;
+    const {path: fileUrl} = req.file;
+    const { body: { title, description, hashtags}} = req;
     // save Data in Video Schema format 
     try{
         await Video.create({
             title: title,
             description: description,
+            fileUrl: fileUrl,
             hashtags: Video.formatHashtags(hashtags)
         })
         return res.redirect("/");

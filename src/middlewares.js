@@ -30,4 +30,6 @@ export const publicOnlyMiddleware = (req, res, next) => {
 }
 
 // lets save file in uploads folder 
-export const multerMiddleware = multer({dest: 'uploads/'}); 
+export const avatarMulterMiddleware = multer({dest: 'uploads/avatars/', limits: {fileSize: 3000000} }); 
+
+export const videoMulterMiddeleware = multer({dest: 'uploads/videos/', limits: {filzeSize: 50000000} });
