@@ -5,10 +5,14 @@ block content
     div
         h2=video.title
         p=video.description
-        small=video.createdAt.toDateString()
+        small Created At #{video.createdAt.toDateString()} 
+    div
+        small Uploaded by 
+            a(href=`/users/${video.owner._id}`) #{video.owner.name}
         p #{video.meta.views} #{video.meta.views > 1 ? "views" : "view"}
         small=video.hashtags.join(" ")
-    a(href=`${video.id}/edit`) Edit Video
-    br
-    a(href=`${video.id}/delete`) Delete Video
+    if String(video.owner._id) === String(loggedInUser._id)
+        a(href=`${video.id}/edit`) Edit Video
+        br
+        a(href=`${video.id}/delete`) Delete Video
         

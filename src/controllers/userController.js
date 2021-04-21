@@ -1,4 +1,5 @@
 import User from '../models/User';
+import Video from '../models/Video';
 import bcrypt from 'bcrypt';
 import fetch from 'node-fetch';
 
@@ -103,9 +104,19 @@ export const postChangePassword = async(req, res) => {
 }
 
 
-export const profile = (req, res) => {
-    res.send("Profile")
+export const profile = async(req, res) => {
+    const { id } = req.params;
+    // find user with video object from video model 
+    const user = await User.findById(id).populate("videos");
+    if(!user) {
+        return res.status(404).render("404", {pageTitle:"User Not Found"});
+    }
+    console.log(user);
+
+    // send user info including videos object from Video model into template 
+    return res.render("users/profile", {pageTitle: user.name, user});
 }
+
 
 export const getLogin = (req, res) => {
     res.render("login", {pageTitle: "Login"})

@@ -14,13 +14,13 @@ html(lang="ko")
                         a(href='/search') Search
                     if loggedIn
                         li 
-                            a(href=`/videos/upload`) Upload Video
+                            a(href="/videos/upload") Upload Video
                         li
                             a(href="/users/edit") Edit Profile
                         li 
-                            a(href="/users/logout") Log out
-                        li 
                             a(href=`/users/${loggedInUser._id}`) #{loggedInUser.name}'s Profile
+                        li 
+                            a(href="/users/logout") Log out
                     else 
                         li 
                             a(href="/login") Login

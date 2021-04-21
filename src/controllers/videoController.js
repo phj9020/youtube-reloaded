@@ -1,4 +1,6 @@
 import Video from '../models/Video';
+import User from '../models/User';
+
 
 export const home = async(req, res) => {
     const videos = await Video.find({}).sort({createdAt:"desc"});
@@ -8,11 +10,15 @@ export const home = async(req, res) => {
 export const watch = async(req, res) => {
     // get id number value from url /1 
     const {id} = req.params;
-    // find video which has a specific id from video object 
-    const video = await Video.findById(id);
+    // find video which has a specific id from video object and populate("owner")
+    const video = await Video.findById(id).populate("owner");
+    
+    console.log(video);
+
     if(!video) {
         return res.render("404", {pageTitle: "Video Not Found"})
     }
+
     return res.render("watch", {pageTitle: video.title, video})
 }    
 
@@ -50,16 +56,28 @@ export const getUpload = (req, res) => {
 }
 
 export const postUpload = async(req, res) => {
+    const {session : {user : {_id}}}=req;
     const {path: fileUrl} = req.file;
     const { body: { title, description, hashtags}} = req;
+
+    console.log(_id)
     // save Data in Video Schema format 
     try{
-        await Video.create({
+        const newVideo = await Video.create({
             title: title,
             description: description,
             fileUrl: fileUrl,
-            hashtags: Video.formatHashtags(hashtags)
+            hashtags: Video.formatHashtags(hashtags),
+            owner: _id,
         })
+
+        // push newVideo id in videos array in User model
+        const user = await User.findById(_id);
+        user.videos.push(newVideo._id);
+
+        // save user model 
+        user.save();
+
         return res.redirect("/");
     } catch(error) {
         res.status(400).render("upload", {pageTitle: "Upload Video", errorMessage: error._message});

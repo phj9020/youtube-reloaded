@@ -9,7 +9,8 @@ const userSchema = new mongoose.Schema({
     username : {type: String, required: true, unique: true},
     password: {type: String},
     name: {type: String, required: true},
-    location: String
+    location: String, 
+    videos: [{type: mongoose.Schema.Types.ObjectId, ref:"Video"}]
 })
 
 // add middleware to hash password before save in database
