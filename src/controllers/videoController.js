@@ -40,24 +40,17 @@ export const getEdit = async(req, res) => {
 
 export const postEdit = async(req, res) => {
     const {id} = req.params;
-    const {user : {_id}} = req.session;
     // get edited input value 
     const {title, description, hashtags} = req.body;
-    // find Video by id if video exists
-    const video = await Video.exists({ _id: id });
-    if(!video) {
-        return res.status(404).render("404", {pageTitle: "Video Not Found"})
-    }
-    // protect to access postEdit page if user is not owner of the video
-    if(String(video.owner) !== String(_id)) {
-        return res.status(403).redirect("/");
-    }
+
     // update new value in DB
     await Video.findByIdAndUpdate(id,{
         title: title,
         description: description,
         hashtags: Video.formatHashtags(hashtags)
-    })
+    });
+
+
     return res.redirect(`/videos/${id}`);
 }
 

@@ -110,7 +110,7 @@ export const profile = async(req, res) => {
     if(!user) {
         return res.status(404).render("404", {pageTitle:"User Not Found"});
     }
-    console.log(user);
+    console.log("유저프로필", user);
 
     // send user info including videos object from Video model into template 
     return res.render("users/profile", {pageTitle: user.name, user});

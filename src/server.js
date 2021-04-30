@@ -27,6 +27,7 @@ app.use(session({
 }))
 app.use(localsMiddleware);
 app.use("/uploads", express.static("uploads"));
+app.use("/static", express.static("assets"));
 
 //router
 app.use("/", rootRouter);
