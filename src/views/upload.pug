@@ -3,7 +3,7 @@ extends base
 block content 
     if errorMessage 
         span=errorMessage
-    form(method="POST" action="/videos/upload" enctype="multipart/form-data")
+    form(method="POST" action="/videos/upload" enctype="multipart/form-data").upload__form 
         label(for="video") Video File
         input(name="video" type="file" id="video" accept="video/*" required)
         input(name="title" type="text" placeholder="Title" required maxlength=50)
