@@ -124,3 +124,17 @@ export const deleteVideo = async(req, res) => {
     
     return res.redirect("/");
 }
+
+
+export const registerView = async(req,res) => {
+    const {id} = req.params;
+    const video = await Video.findById(id);
+    if(!video) {
+        // res.status()는 뒤에 .render()가 있어야만 쓸 수 있다 
+        // 여기서는 render할 필요 없이 백엔드 view처리만 해야한다
+        return res.sendStatus(404);
+    }
+    video.meta.views = video.meta.views + 1;
+    await video.save();
+    return res.sendStatus(200);
+}

@@ -100,6 +100,14 @@ const handleMouseLeave = () => {
     controlsTimeOut = setInterval(hideControls, 2000)
 }
 
+const handleEnded = () => {
+    // cannot get id so, leave clue in pug template and get it here
+    const { videoid } = videoContainer.dataset;
+    fetch(`/api/videos/${videoid}/view`, {
+        method: "POST",
+    })
+}
+
 playBtn.addEventListener("click", handlePlayClick);
 muteBtn.addEventListener("click", handleMuteClick);
 volumeRange.addEventListener("input", handleVolumeChange);
@@ -109,6 +117,9 @@ video.addEventListener("loadedmetadata", handleLoadedMetaData);
 video.addEventListener("timeupdate", handleTimeUpDate);
 timeLine.addEventListener("input", handleTimeLineChange);
 fullScreenBtn.addEventListener("click",handleFullScreen);
+
+// video completed post view
+video.addEventListener("ended", handleEnded)
 
 // controller show hide
 videoContainer.addEventListener("mousemove", handleMouseMove);
