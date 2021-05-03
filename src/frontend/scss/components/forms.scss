@@ -9,7 +9,7 @@ form {
 
     
 }
-    input {
+    input:not(input[type="range"]) {
         all:unset;
         width: 90%;
         padding: 15px 20px;

@@ -4,11 +4,14 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 // console.log(__dirname);
 
 module.exports = {
-    entry: "./src/frontend/js/main.js",
+    entry: {
+        main: "./src/frontend/js/main.js",
+        videoPlayer: "./src/frontend/js/videoPlayer.js"
+    },
     mode: 'development',
     watch: true,
     output: {
-        filename: "js/main.js",
+        filename: "js/[name].js",
         path: path.resolve(__dirname, 'assets'),
         clean: true,
     },
