@@ -6,7 +6,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
     entry: {
         main: "./src/frontend/js/main.js",
-        videoPlayer: "./src/frontend/js/videoPlayer.js"
+        videoPlayer: "./src/frontend/js/videoPlayer.js",
+        recorder: "./src/frontend/js/recorder.js"
     },
     mode: 'development',
     watch: true,
