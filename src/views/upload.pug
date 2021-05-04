@@ -3,12 +3,14 @@ extends base
 block content 
     div.videoRecorder
         video#preview
-        button#actionBtn Start Recording
+        button#actionBtn Start 5 Seconds Recording
     if errorMessage 
         span=errorMessage
     form(method="POST" action="/videos/upload" enctype="multipart/form-data").upload__form 
         label(for="video") Video File
         input(name="video" type="file" id="video" accept="video/*" required)
+        label(for="thumbnail") Thumbnail File
+        input(name="thumbnail" type="file" id="thumbnail" accept="image/*" required)
         input(name="title" type="text" placeholder="Title" required maxlength=50)
         input(name="description" type="text" placeholder="Description" required minlength=20)
         input(name="hashtags" type="text" placeholder="Hashtags, seperated by comma" required)

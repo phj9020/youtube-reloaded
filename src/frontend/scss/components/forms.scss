@@ -9,7 +9,7 @@ form {
 
     
 }
-    input:not(input[type="range"]) {
+    input:not(input[type="range"], input[type="submit"]) {
         all:unset;
         width: 90%;
         padding: 15px 20px;
@@ -25,17 +25,31 @@ form {
         }
     }
     
+    .social__btn {
+        background-color:rgba($color: $red, $alpha: 0.9) ;
+        text-align: center;
+        padding: 12px 20px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        cursor: pointer;
+        display: block;
+        border-radius: 5px;
+        text-transform: uppercase;
 
+    }
 
-input[type="submit"], .social__btn {
-    background-color:rgba($color: $red, $alpha: 0.9);
-    text-align: center;
-    padding: 12px 20px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    cursor: pointer;
-    display: block;
-    border-radius: 5px;
-    text-transform: uppercase;
+input[type="submit"]{
+        all:unset;
+        width: 90%;
+        padding: 15px 20px;
+        text-align: center;
+        text-transform: uppercase;
+        background-color:rgba($color: $red, $alpha: 0.9) ;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 5px;
+        margin-bottom: 5px;
+        font-size: 16px;
+        color: white;
+
 
     .fab.fa-github{
         font-size: 16px;

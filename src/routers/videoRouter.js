@@ -4,7 +4,7 @@ import {videoMulterMiddeleware, privateMiddleware} from '../middlewares';
 
 const videoRouter = express.Router();
 
-videoRouter.route("/upload").all(privateMiddleware).get(getUpload).post(videoMulterMiddeleware.single("video"),postUpload);
+videoRouter.route("/upload").all(privateMiddleware).get(getUpload).post(videoMulterMiddeleware.fields([{name:"video"}, {name:"thumbnail"}]),postUpload);
 videoRouter.get("/:id([0-9a-f]{24})", watch);
 videoRouter.route("/:id([0-9a-f]{24})/edit").all(privateMiddleware).get(getEdit).post(postEdit);
 videoRouter.route("/:id([0-9a-f]{24})/delete").all(privateMiddleware).get(deleteVideo);
