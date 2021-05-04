@@ -3,7 +3,7 @@ extends base
 block content 
     div.videoRecorder
         video#preview
-        button#startBtn Start Recording
+        button#actionBtn Start Recording
     if errorMessage 
         span=errorMessage
     form(method="POST" action="/videos/upload" enctype="multipart/form-data").upload__form 

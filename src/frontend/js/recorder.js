@@ -1,6 +1,6 @@
 import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
 
-const startBtn = document.getElementById("startBtn");
+const actionBtn = document.getElementById("actionBtn");
 const video = document.getElementById("preview");
 
 
@@ -8,23 +8,41 @@ let stream;
 let recorder;
 let videoFile;
 
+const files = {
+    input: "recording.webm",
+    output: "output.mp4",
+    thumb: "thumbnail.jpg",
+}
+
+const downloadFile = (fileUrl, fileName) => {
+    const a = document.createElement("a");
+    a.href= fileUrl;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
 
 const handleDownload = async() => {
+    actionBtn.removeEventListener("click", handleDownload);
+    actionBtn.innerText="Transcoding...";
+    actionBtn.disabled = true;
+    
     // running on webassembly 
     const ffmpeg = createFFmpeg({ log: true });
     await ffmpeg.load();
 
     // create transcoded file in ffmpeg world
-    ffmpeg.FS("writeFile", "recording.webm", await fetchFile(videoFile));
-    await ffmpeg.run('-i', "recording.webm", "-r", "60", "output.mp4");
+    ffmpeg.FS("writeFile", files.input, await fetchFile(videoFile));
+    await ffmpeg.run('-i', files.input, "-r", "60", files.output);
     
     // take screens shot of first frame at 1 second and save it as thumbnail.jpg in ffmpeg
-    await ffmpeg.run('-i', "recording.webm", "-ss", "00:00:01", "-frames:v", "1", "thumbnail.jpg");
+    await ffmpeg.run('-i', files.input, "-ss", "00:00:01", "-frames:v", "1", files.thumb);
 
     // read transcoded file
-    const mp4File = ffmpeg.FS("readFile", "output.mp4");
+    const mp4File = ffmpeg.FS("readFile", files.output);
     // read image file
-    const thumbFile = ffmpeg.FS("readFile", "thumbnail.jpg");
+    const thumbFile = ffmpeg.FS("readFile", files.thumb);
 
     // file number of array
     console.log(mp4File);
@@ -41,48 +59,40 @@ const handleDownload = async() => {
 
 
     // for video download
-    const a = document.createElement("a");
-    a.href= mp4Url;
-    a.download = "MyRecording.mp4";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-
+    downloadFile(mp4Url, "MyRecording.mp4");
+    
     // for image download
-    const thumbA = document.createElement("a");
-    thumbA.href= thumbUrl;
-    thumbA.download = "MyThumbnail.jpg";
-    document.body.appendChild(thumbA);
-    thumbA.click();
-    document.body.removeChild(thumbA);
+    downloadFile(thumbUrl, "MyThumbnail.jpg");
+    
 
     // unlink files ::  cleansing (it stacks on memory so need to cleanse it)
-    ffmpeg.FS("unlink", "recording.webm");
-    ffmpeg.FS("unlink", "output.mp4");
-    ffmpeg.FS("unlink", "thumbnail.jpg");
+    ffmpeg.FS("unlink", files.input);
+    ffmpeg.FS("unlink", files.output);
+    ffmpeg.FS("unlink", files.thumb);
     URL.revokeObjectURL(mp4Url);
     URL.revokeObjectURL(thumbUrl);
     URL.revokeObjectURL(videoFile);
 
     // finish download event and make it start recording button & init
-    startBtn.removeEventListener("click", handleDownload);
-    startBtn.innerText="Start Recording";
+    
+    actionBtn.innerText="Start Recording";
+    actionBtn.disabled = false;
     init();
-    startBtn.addEventListener("click", handleStart);
+    actionBtn.addEventListener("click", handleStart);
 }
 
 const handleStop = () => {
-    startBtn.innerText = "Download Recording";
-    startBtn.removeEventListener("click", handleStop);
-    startBtn.addEventListener("click", handleDownload);
+    actionBtn.innerText = "Download Recording";
+    actionBtn.removeEventListener("click", handleStop);
+    actionBtn.addEventListener("click", handleDownload);
     recorder.stop();
 
 }
 
 const handleStart = () =>{
-    startBtn.innerText= "Stop Recording";
-    startBtn.removeEventListener("click",handleStart);
-    startBtn.addEventListener("click", handleStop);
+    actionBtn.innerText= "Stop Recording";
+    actionBtn.removeEventListener("click",handleStart);
+    actionBtn.addEventListener("click", handleStop);
 
     // Creates a new MediaRecorder object 
     recorder = new MediaRecorder(stream, {mimeType: "video/webm"});
@@ -118,4 +128,4 @@ const init = async() => {
 
 init();
 
-startBtn.addEventListener("click", handleStart);
+actionBtn.addEventListener("click", handleStart);
