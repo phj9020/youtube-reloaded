@@ -12,7 +12,7 @@ export const watch = async(req, res) => {
     const {id} = req.params;
     // find video which has a specific id from video object and populate("owner")
     const video = await Video.findById(id).populate("owner");
-
+    console.log(video);
     if(!video) {
         return res.render("404", {pageTitle: "Video Not Found"})
     }
@@ -32,6 +32,7 @@ export const getEdit = async(req, res) => {
 
     // protect to access edit page if user is not owner of the video
     if(String(video.owner) !== String(_id)) {
+        req.flash('error',"You are not owner of the Video");
         return res.status(403).redirect("/");
     }
 
@@ -50,7 +51,7 @@ export const postEdit = async(req, res) => {
         hashtags: Video.formatHashtags(hashtags)
     });
 
-
+    req.flash('info',"Video has been updated");
     return res.redirect(`/videos/${id}`);
 }
 
@@ -83,7 +84,7 @@ export const postUpload = async(req, res) => {
 
         // save user model 
         user.save();
-
+        req.flash('success',"Video has been uploaded");
         return res.redirect("/");
     } catch(error) {
         res.status(400).render("upload", {pageTitle: "Upload Video", errorMessage: error._message});
@@ -119,12 +120,13 @@ export const deleteVideo = async(req, res) => {
 
     // if user is not owner of video redirect to home 
     if(String(video.owner) !== String(_id)) {
+        req.flash('error',"Not Authorized");
         return res.status(403).redirect("/");
     }
     
     // delete video 
     await Video.findByIdAndDelete(id);
-    
+    req.flash('info',"Video has been deleted");
     return res.redirect("/");
 }
 

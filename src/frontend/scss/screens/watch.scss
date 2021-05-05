@@ -1,0 +1,41 @@
+.videoMeta {
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+
+    .videoTitle{
+        font-size: 28px;
+        margin-bottom: 15px;
+    }
+    
+    .videoDescription {
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
+    
+    .videoHashTag {
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
+
+    span {
+        font-size: 12px;
+    }
+
+    .videoCreator {
+        font-size: 12px;
+        text-decoration: underline;
+        color: lightblue;
+        
+    }
+    
+    .videoDate {
+        font-size: 12px;
+        margin-top:10px;
+    }
+}
+
+.videoComment{
+    width: 100%;
+    
+}

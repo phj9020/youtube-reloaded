@@ -16,6 +16,7 @@
 @import "./screens/profile.scss";
 @import "./screens/edit-profile.scss";
 @import "./screens/upload.scss";
+@import "./screens/watch.scss";
 
 // Defaults
 
@@ -38,4 +39,43 @@ main {
     margin-top : 50px;
     min-height: 100vh;
     height:100%;
+}
+
+
+@keyframes goaway {
+    from {
+        transform: none;
+        opacity: 1;
+    }
+    to {
+        transform: translateY(100px);
+        opacity: 0;
+    }
+}
+
+.message {
+    position:absolute;
+    left:0;
+    right:0;
+    margin:0 auto;
+    bottom: 50px;
+    max-width: 250px;
+    padding: 10px 20px;
+    border-radius: 100px;
+    text-align: center;
+    color: white;
+    animation: goaway 1s ease-in-out forwards;
+    animation-delay: 2s;
+    
+    &.error {
+        background-color: tomato;
+    }
+
+    &.success {
+        background-color: #7EB77F;
+    }
+
+    &.info {
+        background-color: #335B34;
+    }
 }

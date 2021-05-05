@@ -31,6 +31,7 @@ export const postJoin = async(req, res) => {
             password: password2,
             location: location
         })
+        req.flash('info',"Account is successfully created");
         return res.redirect("/login");
     } catch(error) {
         return res.status(400).render("join", {pageTitle:pageTitle, errorMessage: error._message })
@@ -65,13 +66,18 @@ export const postEdit = async(req, res) => {
 
     // 3. update session with new object
     req.session.user = updatedUser;
+    req.flash('info',"Profile is successfully updated");
     return res.redirect("/users/edit");
 }
 
 
 
 export const getChangePassword = (req, res) => {
-    res.render("users/change-password", {pageTitle: "Change Password"})
+    if(req.session.user.socialOnly === true) {
+        req.flash("info", "You are logged in with Github");
+        return res.redirect("/");
+    }
+    return res.render("users/change-password", {pageTitle: "Change Password"});
 }
 
 export const postChangePassword = async(req, res) => {
@@ -97,9 +103,9 @@ export const postChangePassword = async(req, res) => {
     await user.save();
 
     // send notification that password has been changed
-
-    // 6. log-out
-    res.redirect("/users/logout");
+    req.flash("success", "Password has been changed");
+    // 6. redirect to home
+    res.redirect("/");
 }
 
 
@@ -145,6 +151,7 @@ export const postLogin = async (req, res) => {
     // store user in session to remember user is logged in
     req.session.loggedIn = true;
     req.session.user = user;
+    req.flash('success',"Successfully Logged In");
     return res.redirect("/")
 }
 

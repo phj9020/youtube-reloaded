@@ -15,6 +15,7 @@ export const privateMiddleware = (req, res, next) => {
     if(req.session.loggedIn) {
         next();
     } else {
+        req.flash('error', "Not Authorized");
         // if user not logged-in redirect to login page 
         return res.redirect("/login");
     }
@@ -25,6 +26,7 @@ export const publicOnlyMiddleware = (req, res, next) => {
     if(!req.session.loggedIn) {
         return next();
     } else {
+        req.flash('error',"Not Authorized");
         return res.redirect("/");
     }
 }

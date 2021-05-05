@@ -19,6 +19,13 @@ block content
             div 
                 span#fullScreen 
                     i.fas.fa-expand
-
+    div.videoMeta
+        h2.videoTitle=video.title
+        p.videoDescription=video.description
+        p.videoHashTag=video.hashtags.join(" ")
+        span Uploaded by 
+        a.videoCreator(href=`/users/${video.owner._id}`) #{video.owner.name}
+        span  at #{video.createdAt.toLocaleDateString()}
+    div.videoComment
 block scripts
     script(src="/static/js/videoPlayer.js")
