@@ -26,6 +26,21 @@ block content
         span Uploaded by 
         a.videoCreator(href=`/users/${video.owner._id}`) #{video.owner.name}
         span  at #{video.createdAt.toLocaleDateString()}
+    if loggedIn
+        div.videoAddComment
+            form.videoComment__form#commentForm
+                textarea( placeholder="Write Comment")
+                button Add Comment
     div.videoComment
+        ul
+            each comment in video.comments.reverse()
+                li.comment(data-id=comment.id)
+                    i.fas.fa-comment
+                    p #{comment.text}
+                    if String(loggedInUser._id) === String(comment.owner)
+                        span.deleteBtn ❌
+                
 block scripts
     script(src="/static/js/videoPlayer.js")
+    if loggedIn
+        script(src="/static/js/commentSection.js")

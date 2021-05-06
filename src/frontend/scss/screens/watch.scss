@@ -35,7 +35,71 @@
     }
 }
 
-.videoComment{
+.videoAddComment{
     width: 100%;
-    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    form {
+        display:flex;
+        justify-content: center;
+        align-items: center;
+
+        textarea{
+            outline: none;
+            resize: none;
+            background-color: rgba(255, 255, 255, 0.2);;
+            color: white;
+            padding:5px;
+
+            &::placeholder {
+                color: white;
+            }
+        }
+        button{
+            all:unset;
+            padding: 13px 5px;
+            border: 1px solid white;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left:5px;
+            font-size: 14px;
+        }
+    }
+}
+
+
+.videoComment {
+    width:30%;
+    height: 100%;
+    min-height: 300px;
+    margin: 0 auto;
+
+    .comment {
+        background-color: white;
+        color: black;
+        padding:20px;
+        margin: 10px 0px;
+        list-style-type: none;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+
+        .fa-comment {
+            margin-right: 10px;
+            color: #229977;
+        }
+
+        p {
+            width:85%;
+            overflow-wrap: break-word;
+            margin-right: 10px;
+        }
+
+        .deleteBtn {
+            cursor: pointer;
+        }
+    }
 }

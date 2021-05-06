@@ -1,6 +1,6 @@
 header {
     width: 100%;
-    padding: 20px 50px;
+    // padding: 20px 50px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -8,11 +8,14 @@ header {
     a.header__logo {
         color: $red;
         font-size: 38px;
+        padding: 20px 50px;
+        display: block;
     }
 
     ul {
+        padding: 20px 50px;
         display: flex;
-        margin-right: 100px;
+        // margin-right: 100px;
         justify-content: space-between;
         align-items: center;
 
