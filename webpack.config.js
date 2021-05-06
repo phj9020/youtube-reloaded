@@ -10,8 +10,6 @@ module.exports = {
         recorder: "./src/frontend/js/recorder.js",
         commentSection: "./src/frontend/js/commentSection.js"
     },
-    mode: 'development',
-    watch: true,
     output: {
         filename: "js/[name].js",
         path: path.resolve(__dirname, 'assets'),

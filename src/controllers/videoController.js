@@ -63,11 +63,8 @@ export const getUpload = (req, res) => {
 export const postUpload = async(req, res) => {
     const {session : {user : {_id}}}=req;
     const {video, thumbnail} = req.files;
-    console.log("video", video);
-    console.log("thumbnail", thumbnail);
     const { body: { title, description, hashtags}} = req;
 
-    console.log(_id)
     // save Data in Video Schema format 
     try{
         const newVideo = await Video.create({

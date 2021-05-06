@@ -3,8 +3,12 @@
   "version": "1.0.0",
   "description": "Watch Videos",
   "scripts": {
+    "start": "node build/init.js",
+    "build": "npm run build:server && build:assets",
+    "build:server":"babel src -d build",
+    "build:assets": "webpack --mode=production",
     "dev:server": "nodemon",
-    "dev:assets": "webpack --config webpack.config.js"
+    "dev:assets": "webpack --mode=development -w"
   },
   "repository": {
     "type": "git",
@@ -36,7 +40,8 @@
     "runtime": "^0.14.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.13.14",
+    "@babel/cli": "^7.13.16",
+    "@babel/core": "^7.14.0",
     "@babel/node": "^7.13.13",
     "@babel/preset-env": "^7.13.12",
     "css-loader": "^5.2.4",
