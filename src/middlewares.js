@@ -1,4 +1,20 @@
 import multer from "multer";
+import multerS3 from "multer-s3";
+import aws from 'aws-sdk';
+
+const s3 = new aws.S3({ 
+    // pass aws key and secret
+    credentials: {
+        accessKeyId: process.env.AWS_ACCESS_ID,
+        secretAccessKey: process.env.AWS_SECRET_KEY
+    }
+})
+
+const multerUploader = multerS3({
+        s3: s3,
+        bucket: 'wetubereload',
+        acl: 'public-read',
+})
 
 export const localsMiddleware = (req,res,next) => {
     // console.log("req.session",req.session)
@@ -31,6 +47,16 @@ export const publicOnlyMiddleware = (req, res, next) => {
 }
 
 // lets save file in uploads folder 
-export const avatarMulterMiddleware = multer({dest: 'uploads/avatars/', limits: {fileSize: 3000000} }); 
+export const avatarMulterMiddleware = multer({
+    dest: 'uploads/avatars/', 
+    limits: {fileSize: 3000000}, 
+    storage: multerUploader
+    }
+); 
 
-export const videoMulterMiddeleware = multer({dest: 'uploads/videos/', limits: {filzeSize: 50000000} });
+export const videoMulterMiddeleware = multer({
+    dest: 'uploads/videos/', 
+    limits: {filzeSize: 50000000}, 
+    storage: multerUploader
+    }
+);
