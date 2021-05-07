@@ -64,14 +64,14 @@ export const postUpload = async(req, res) => {
     const {session : {user : {_id}}}=req;
     const {video, thumbnail} = req.files;
     const { body: { title, description, hashtags}} = req;
-
+    const isHeroku = process.env.NODE_ENV === "production";
     // save Data in Video Schema format 
     try{
         const newVideo = await Video.create({
             title: title,
             description: description,
-            fileUrl: video[0].location,
-            thumbnailUrl: thumbnail[0].location,
+            fileUrl: isHeroku ? video[0].location : video[0].path,
+            thumbnailUrl: isHeroku ? thumbnail[0].location : thumbnail[0].path,
             hashtags: Video.formatHashtags(hashtags),
             owner: _id,
         })

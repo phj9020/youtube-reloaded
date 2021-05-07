@@ -55,14 +55,14 @@ export const postEdit = async(req, res) => {
             return res.status(400).render("users/edit-profile", {pageTitle:"Edit Profile", errorMessage:"This email is already taken. Please use another email"})
         }
     }
-    
+    const isHeroku = process.env.NODE_ENV === "production";
     // 2. find by id and update in mongodb
     const updatedUser = await User.findByIdAndUpdate(_id, {
         name: name,
         email: email,
         username: username,
         location: location,
-        avatarUrl: file ? file.location : avatarUrl
+        avatarUrl: file ? (isHeroku ? file.location : file.path) : avatarUrl
     }, {new: true});
 
     // 3. update session with new object

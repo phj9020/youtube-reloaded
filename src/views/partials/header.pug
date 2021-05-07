@@ -21,8 +21,10 @@ header
                             if loggedInUser.avatarUrl
                                 if loggedInUser.avatarUrl.includes("github")
                                     img.header__avatar(src=loggedInUser.avatarUrl)
-                                else 
+                                else if isHeroku
                                     img.header__avatar(src=loggedInUser.avatarUrl)
+                                else 
+                                    img.header__avatar(src="/"+loggedInUser.avatarUrl)
             else 
                 li 
                     a(href="/login").header__btn Login
